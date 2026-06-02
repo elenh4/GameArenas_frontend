@@ -8,7 +8,7 @@
       </div>
       <div style="display: flex; gap: 30px; color: #ff00ff; text-align: right;">
         <span>GAMING TURNIRI SCOREBOARD</span>
-        <span>REGISTRIRAJ SE</span>
+        <span @click="Registracija_korisnika">REGISTRIRAJ SE</span>
       </div>
     </nav>
 
@@ -50,7 +50,6 @@
     </main>
   </div>
 </template>
-
 <script setup>
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -63,9 +62,8 @@ const forma = reactive({ email: '', password: '' })
 
 const router = useRouter()
 
-const Pocetna_stranica = () => {
-  router.push('/')
-}
+const Pocetna_stranica = () => {router.push('/')}
+const Registracija_korisnika = () => {router.push( '/Registracija_korisnika' )}
 
 const prijavi_se = async () => {
   ucitavanje_stranice.value = true

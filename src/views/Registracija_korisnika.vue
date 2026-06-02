@@ -121,14 +121,18 @@ const user = reactive({
   prihvacaNewsletter: false
 })
 
+const ucitavanje = ref(false)
+
 const krivi_podaci = async () => {
   if (user.password !== user.confirmPassword) {
     alert('Lozinka i ponovna lozinka se ne podudaraju!')
     return
   }
 
+  ucitavanje.value = true
+
   try {
-    await axios.post('http://localhost:3000/api/korisnici/registracija', {
+    await axios.post('http://localhost:3000/api/korisnici/registarcija', {
       ime: user.firstName,
       prezime: user.lastName,
       email: user.email,
@@ -144,8 +148,9 @@ const krivi_podaci = async () => {
       error.response?.data?.message ||
       'Greška pri registraciji. Pokušajte ponovno.'
     )
+  } finally {
+    ucitavanje.value = false
   }
 }
-
 </script>
 

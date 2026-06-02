@@ -8,6 +8,7 @@
       </div>
       <div style="display: flex; gap: 30px; color: #ff00ff; text-align: right;">
         <span style="cursor: pointer; color: #ff00ff;">GAMING TURNIRI SCOREBOARD</span>
+        <span style="color: #00ffff; cursor: pointer;" @click="router.push('/Volonteri_prijava')">PRIJAVI SE KAO VOLONTER</span>
         <span style="cursor: pointer; color: #ff00ff;" @click="Prijava_stranica">PRIJAVI SE</span>
       </div>
     </nav>
@@ -97,5 +98,54 @@
   </div>
 </template>
 
+<script setup>
+import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import axios from 'axios'
+import GameArenasLogo from '@/assets/gamearenas_naslov1.png'
 
+const Pocetna_stranica = () => {router.push('/')}
+const Prijava_stranica = () => {router.push('/Prijava_korisnika' )}
+
+const logo = ref(GameArenasLogo)
+const router = useRouter()
+
+const user = reactive({
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+  username: '',
+  prihvacaUvjete: false,
+  prihvacaNewsletter: false
+})
+
+const krivi_podaci = async () => {
+  if (user.password !== user.confirmPassword) {
+    alert('Lozinka i ponovna lozinka se ne podudaraju!')
+    return
+  }
+
+  try {
+    await axios.post('http://localhost:5000/api/korisnici/registracija', {
+      ime: user.firstName,
+      prezime: user.lastName,
+      email: user.email,
+      lozinka: user.password,
+      username: user.username,
+      newsletter: user.prihvacaNewsletter
+    })
+
+    router.push('/Registarcija_uspjesna')
+
+  } catch (error) {
+    alert(
+      error.response?.data?.message ||
+      'Greška pri registraciji. Pokušajte ponovno.'
+    )
+  }
+}
+
+</script>
 

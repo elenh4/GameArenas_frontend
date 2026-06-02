@@ -166,7 +166,7 @@ const volonter_registracija = async () => {
   }
 
   try {
-    await axios.post('http://localhost:5000/api/volonteri/register', {
+    await axios.post('http://localhost:3000/api/volonteri/register', {
       ime: volonter.firstName,
       prezime: volonter.lastName,
       email: volonter.email,

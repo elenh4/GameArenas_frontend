@@ -128,7 +128,7 @@ const krivi_podaci = async () => {
   }
 
   try {
-    await axios.post('http://localhost:5000/api/korisnici/registracija', {
+    await axios.post('http://localhost:3000/api/korisnici/registracija', {
       ime: user.firstName,
       prezime: user.lastName,
       email: user.email,

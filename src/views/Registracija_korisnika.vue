@@ -132,7 +132,7 @@ const krivi_podaci = async () => {
   ucitavanje.value = true
 
   try {
-    await axios.post('http://localhost:3000/api/korisnici/registarcija', {
+    await axios.post('http://localhost:3000/api/korisnici/registracija', {
       ime: user.firstName,
       prezime: user.lastName,
       email: user.email,

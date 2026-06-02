@@ -2,7 +2,7 @@
   <div style="margin: 0; padding: 0; background: #0a0e27; color: #00ffff; font-family: Arial, sans-serif; min-height: 100vh;">
     <header style="padding: 10px 30px; border-bottom: 2px solid #00ffff;">
       <nav style="display: flex; justify-content: center; gap: 30px; margin-bottom: 10px; flex-wrap: wrap; align-items: center;">
-        <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px; cursor: pointer;" @click="idiNaPocetnu">
+        <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px; cursor: pointer;" @click="idi_na_Pocetnu">
           POČETNA STRANICA
         </span>
         <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px;">SOCIAL GAMES</span>
@@ -78,9 +78,7 @@ const router = useRouter()
 
 const prijava_stranica = () => router.push('/Prijava_korisnika')
 
-const idiNaPocetnu = () => {
-  router.push('/')
-}
+const idi_na_Pocetnu = () => {router.push('/')}
 
 const tournaments = ref([
   {

@@ -69,30 +69,19 @@ const prijavi_se = async () => {
   ucitavanje_stranice.value = true
   errorMessage.value = ''
   try {
-    const response = await fetch('http://localhost:3000/api/auth/Prijava_korisnika', {
+    const response = await fetch('http://localhost:3000/api/korisnici/prijava', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: forma.email, password: forma.password })
+      body: JSON.stringify({ email: forma.email,lozinka: forma.password })
     })
-    
     const data = await response.json()
     if (!response.ok) throw new Error(data.message || 'Neispravni podaci.')
-    
-    localStorage.setItem('token', data.token)
+  
+    localStorage.setItem('trenutniKorisnik', JSON.stringify(data.user))
 
-    localStorage.setItem('trenutniKorisnik', JSON.stringify({
-      id: data.id,
-      ime: data.ime,
-      prezime: data.prezime,
-      uloga: data.uloga,
-      odobren: data.odobren
-    }))
-
-    console.log('Uspješna prijava!', data)
     router.push('/')
-
   } catch (error) {
-    errorMessage.value = error.message || 'Greška na serveru.'
+    errorMessage.value = error.message
   } finally {
     ucitavanje_stranice.value = false
   }

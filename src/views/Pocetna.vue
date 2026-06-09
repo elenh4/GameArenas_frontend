@@ -102,4 +102,13 @@ const formatTime = (endTimeString) => {
 
 onMounted(() => { timerInterval = setInterval(() => { currentTime.value = Date.now() }, 1000) })
 onUnmounted(() => { clearInterval(timerInterval) })
+
+const odjava = () => {
+  localStorage.removeItem('userId')
+  localStorage.removeItem('ime')
+  localStorage.removeItem('korisnik')
+  
+  jePrijavljen.value = false
+  router.push('/')
+}
 </script>

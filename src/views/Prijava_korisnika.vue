@@ -8,7 +8,7 @@
       </div>
       <div style="display: flex; gap: 30px; color: #ff00ff; text-align: right;">
         <span>GAMING TURNIRI SCOREBOARD</span>
-        <span @click="Registracija_korisnika">REGISTRIRAJ SE</span>
+        <span @click="Registracija_korisnika" style="cursor: pointer;">REGISTRIRAJ SE</span>
       </div>
     </nav>
 
@@ -50,6 +50,7 @@
     </main>
   </div>
 </template>
+
 <script setup>
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -62,24 +63,27 @@ const forma = reactive({ email: '', password: '' })
 
 const router = useRouter()
 
-const Pocetna_stranica = () => {router.push('/')}
-const Registracija_korisnika = () => {router.push( '/Registracija_korisnika' )}
+const Pocetna_stranica = () => { router.push('/') }
+const Registracija_korisnika = () => { router.push('/Registracija_korisnika') }
 
 const prijavi_se = async () => {
   ucitavanje_stranice.value = true
   errorMessage.value = ''
+  
   try {
     const response = await fetch('http://localhost:3000/api/korisnici/prijava', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: forma.email,lozinka: forma.password })
+      body: JSON.stringify({ email: forma.email, lozinka: forma.password })
     })
+    
     const data = await response.json()
     if (!response.ok) throw new Error(data.message || 'Neispravni podaci.')
-  
     localStorage.setItem('trenutniKorisnik', JSON.stringify(data.user))
+    localStorage.setItem('userId', data.user.id) 
 
-    router.push('/')
+    router.push('/ProfilKorisnik') 
+    
   } catch (error) {
     errorMessage.value = error.message
   } finally {

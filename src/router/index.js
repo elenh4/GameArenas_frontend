@@ -3,6 +3,7 @@ import Pocetna from '../views/Pocetna.vue'
 import Prijava from '../views/Prijava_korisnika.vue'
 import Registracija from '../views/Registracija_korisnika.vue'
 import Volonteri from '@/views/Volonteri_prijava.vue'
+import ProfilKorisnik from '../views/ProfilKorisnik.vue'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/Volonteri_prijava',
     name: 'VolonteriPrijava',
     component: Volonteri
+  },
+  {
+    path: '/ProfilKorisnik', 
+    name: 'ProfilKorisnik',
+    component: ProfilKorisnik
   }
 ]
 

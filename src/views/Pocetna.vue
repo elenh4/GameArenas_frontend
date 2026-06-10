@@ -6,13 +6,10 @@
           POČETNA STRANICA
         </span>
         <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px;">SOCIAL GAMES</span>
-        <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px;">TURNIRI</span>
-        
+        <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px; cursor: pointer;" @click="router.push('/Turniri_esport_prikaz')">ESPORT TURNIRI</span>
         <div style="text-align: center; margin: 5px 20px;">
           <img :src="logo" alt="Game Arenas" style="display: block; margin: 0 auto; max-width: 500px; width: 100%; height: auto;">
         </div>
-
-        <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px;">GAMING TURNIRI</span>
         <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px;">SCOREBOARD</span>
         <template v-if="jePrijavljen">
           <button

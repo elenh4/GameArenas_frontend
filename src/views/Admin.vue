@@ -10,7 +10,7 @@
           <img :src="logo" alt="Game Arenas" style="display: block; margin: 0 auto; max-width: 500px; width: 100%; height: auto;">
         </div>
 
-        <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px;">GAMING TURNIRI</span>
+        <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px; cursor: pointer;" @click="idi_na_turnir">ESPORT TURNIRI</span>
         <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px;">SCOREBOARD</span>
         <button
           @click="odjavi_se"
@@ -112,6 +112,7 @@ import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import GameArenasLogo from '@/assets/gamearenas_naslov1.png';
+import Turniri_esport_prikaz from './Turniri_esport_prikaz.vue';
 
 const logo = ref(GameArenasLogo);
 const router = useRouter();
@@ -136,7 +137,7 @@ const dohvatiPodatke = async () => {
 };
 
 const idi_na_Pocetnu = () => router.push('/');
-
+const idi_na_turnir = () => router.push('/Turniri_esport_prikaz');
 const odjavi_se = () => {
   localStorage.clear();
   router.push('/');

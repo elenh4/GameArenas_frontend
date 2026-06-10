@@ -4,9 +4,7 @@
       <nav style="display: flex; justify-content: center; gap: 30px; margin-bottom: 10px; align-items: center;">
         <span style="color: #00ffff; font-size: 12px; font-weight: bold; cursor: pointer;" @click="idi_na_Pocetnu">POČETNA STRANICA</span>
         <img :src="logo" alt="Game Arenas" style="max-width: 200px;">
-        <span style="color: #00ffff; font-size: 12px; font-weight: bold; cursor: pointer;" @click="odjavi_se">
-  ODJAVI SE
-</span>
+        <span style="color: #00ffff; font-size: 12px; font-weight: bold; cursor: pointer;" @click="odjavi_se">ODJAVI SE</span>
       </nav>
     </header>
 
@@ -20,11 +18,14 @@
           <p>DRŽAVA : <span style="color: #fff;">{{ user.drzava }}</span></p>
           <p>LEAGUE : <span style="color: #fff;">{{ user.league }}</span></p>
           
-          <h2 style="color: #ff00ff; margin-top: 30px; font-size: 24px; text-shadow: 0 0 10px #ff00ff;">POVIJEST TURNIRA :</h2>
+          <h2 style="color: #ff00ff; margin-top: 30px; font-size: 24px; text-shadow: 0 0 10px #ff00ff;">AKTIVNI TURNIRI :</h2>
           <div style="margin-top: 15px; font-size: 16px; color: #fff;">
-            <p v-for="t in tournamentHistory" :key="t.id" style="margin-bottom: 8px;">
-              <span style="color: #00ffff;">{{ t.ime }}</span> {{ t.datum }} - {{ t.place }}
-            </p>
+            <p v-if="aktivniTurniri.length === 0" style="color: #888; font-size: 14px;">Niste prijavljeni ni na jedan turnir.</p>
+            <div v-for="t in aktivniTurniri" :key="t._id" style="margin-bottom: 15px; border-bottom: 1px solid #1a1a3a; padding-bottom: 10px;">
+              <p style="margin: 0; color: #00ffff; font-weight: bold;">{{ t.naziv }}</p>
+              <p style="margin: 0; font-size: 13px; color: #888;">{{ t.datum }} u {{ t.vrijeme }}</p>
+              <p style="margin: 0; font-size: 12px; color: #ff00ff;">{{ t.vrsta.toUpperCase() }}</p>
+            </div>
           </div>
         </div>
 
@@ -33,9 +34,16 @@
         </div>
 
         <div style="width: 280px; border: 2px solid #00ffff; padding: 15px; background: rgba(0, 255, 255, 0.05); text-align: center;">
-          <img :src="activeTournament.image" style="width: 100%; border: 1px solid #00ffff; margin-bottom: 15px;">
-          <h3 style="color: #00ffff; margin-bottom: 10px;">AKTIVAN TURNIR</h3>
-          <p style="color: #adff2f; font-weight: bold;">{{ activeTournament.date }} {{ activeTournament.time }}</p>
+          <h3 style="color: #00ffff; margin-bottom: 10px;">SLJEDEĆI TURNIR</h3>
+          <div v-if="aktivniTurniri.length > 0">
+            <div style="width: 100%; height: 150px; background: #1a1a3a; border: 1px solid #00ffff; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+              <img v-if="aktivniTurniri[0].url" :src="aktivniTurniri[0].url" style="width: 100%; height: 100%; object-fit: cover;" />
+              <span v-else style="font-size: 40px;">🎮</span>
+            </div>
+            <p style="color: #fff; font-weight: bold; margin-bottom: 5px;">{{ aktivniTurniri[0].naziv }}</p>
+            <p style="color: #adff2f; font-weight: bold;">{{ aktivniTurniri[0].datum }} {{ aktivniTurniri[0].vrijeme }}</p>
+          </div>
+          <p v-else style="color: #888; font-size: 13px;">Nema nadolazećih turnira.</p>
         </div>
 
       </div>
@@ -44,14 +52,13 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router' 
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import axios from 'axios'
 import GameArenasLogo from '@/assets/gamearenas_naslov1.png'
-import TournamentImage from '@/assets/island-hoppers.png' 
 
 const logo = ref(GameArenasLogo)
-const router = useRouter() 
-
+const router = useRouter()
 
 const spremljeniKorisnik = JSON.parse(localStorage.getItem('trenutniKorisnik'))
 
@@ -67,20 +74,21 @@ const user = ref({
   league: 'BRONZE'
 })
 
-const tournamentHistory = ref([
-  { id: 1, ime: 'ISLAND HOPPERS', datum: '07/01/2026', place: '3RD PLACE' },
-  { id: 2, ime: 'MAGICAL MEADOW', datum: '03/01/2026', place: '15TH PLACE' },
-  { id: 3, ime: 'TASTY MATCH', datum: '28/12/2025', place: '1ST PLACE' }
-])
+const aktivniTurniri = ref([])
 
-const activeTournament = ref({
-  image: TournamentImage,
-  date: '17/01/2026',
-  time: '6PM'
-})
+const dohvatiMojeTurnire = async () => {
+  try {
+    const res = await axios.get('http://localhost:3000/api/turniri')
+    aktivniTurniri.value = res.data.filter(t =>
+      t.prijavljeni && t.prijavljeni.includes(spremljeniKorisnik?.id)
+    )
+  } catch (error) {
+    console.error('Greška pri dohvatu turnira:', error)
+  }
+}
 
 const idi_na_Pocetnu = () => {
-  router.push('/') 
+  router.push('/')
 }
 
 const odjavi_se = () => {
@@ -88,4 +96,8 @@ const odjavi_se = () => {
   localStorage.removeItem('userId')
   router.push('/')
 }
+
+onMounted(() => {
+  dohvatiMojeTurnire()
+})
 </script>

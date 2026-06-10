@@ -6,6 +6,7 @@ import Volonteri from '@/views/Volonteri_prijava.vue'
 import ProfilKorisnik from '../views/ProfilKorisnik.vue'
 import Admin from '@/views/Admin.vue'
 import DodajTurnir from '../views/DodajTurnir.vue'
+import TurniriEsport from '../views/Turniri_esport_prikaz.vue'
 
 const routes = [
   {
@@ -42,6 +43,10 @@ const routes = [
   path: '/DodajTurnir',
   name: 'DodajTurnir',
   component: DodajTurnir
+  },
+  { path: '/Turniri_esport_prikaz', 
+    name: 'TurniriEsport', 
+    component: TurniriEsport
   }
 ]
 

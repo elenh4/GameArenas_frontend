@@ -52,8 +52,17 @@ import TournamentImage from '@/assets/island-hoppers.png'
 const logo = ref(GameArenasLogo)
 const router = useRouter() 
 
+
+const spremljeniKorisnik = JSON.parse(localStorage.getItem('trenutniKorisnik'))
+
+if (!spremljeniKorisnik) {
+  router.push('/Prijava_korisnika')
+} else if (spremljeniKorisnik.uloga === 'admin') {
+  router.push('/Admin')
+}
+
 const user = ref({
-  username: 'ADMIN',
+  username: spremljeniKorisnik?.username || 'Korisnik',
   drzava: 'HRVATSKA',
   league: 'BRONZE'
 })
@@ -75,7 +84,8 @@ const idi_na_Pocetnu = () => {
 }
 
 const odjavi_se = () => {
-  localStorage.clear()
+  localStorage.removeItem('trenutniKorisnik')
+  localStorage.removeItem('userId')
   router.push('/')
 }
 </script>

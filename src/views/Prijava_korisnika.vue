@@ -82,7 +82,11 @@ const prijavi_se = async () => {
     localStorage.setItem('trenutniKorisnik', JSON.stringify(data.user))
     localStorage.setItem('userId', data.user.id) 
 
-    router.push('/ProfilKorisnik') 
+    if (data.user.uloga === 'admin') {
+    router.push('/Admin')
+    }else {
+    router.push('/ProfilKorisnik')
+    }
     
   } catch (error) {
     errorMessage.value = error.message

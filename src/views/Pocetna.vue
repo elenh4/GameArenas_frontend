@@ -9,13 +9,36 @@
         <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px;">TURNIRI</span>
         
         <div style="text-align: center; margin: 5px 20px;">
-            <img :src="logo" alt="Game Arenas" style="display: block; margin: 0 auto; max-width: 500px; width: 100%; height: auto;">
+          <img :src="logo" alt="Game Arenas" style="display: block; margin: 0 auto; max-width: 500px; width: 100%; height: auto;">
         </div>
 
         <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px;">GAMING TURNIRI</span>
         <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px;">SCOREBOARD</span>
-        
-        <button @click="prijava_stranica" style="background: none; border: none; color: #ff00ff; font-size: 12px; font-weight: bold; letter-spacing: 1px; transition: all 0.3s ease; cursor: pointer; padding: 0; font-family: inherit;" @mouseover="$event.target.style.textShadow = '0 0 10px #ff00ff'" @mouseout="$event.target.style.textShadow = 'none'">
+        <template v-if="jePrijavljen">
+          <button
+            @click="router.push('/ProfilKorisnik')"
+            style="background: none; border: none; color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px; cursor: pointer; padding: 0; font-family: inherit;"
+            @mouseover="$event.target.style.textShadow = '0 0 10px #00ffff'"
+            @mouseout="$event.target.style.textShadow = 'none'"
+          >
+            TVOJ PROFIL ({{ trenutniKorisnik.username }})
+          </button>
+          <button
+            @click="odjavi_se"
+            style="background: none; border: none; color: #ff00ff; font-size: 12px; font-weight: bold; letter-spacing: 1px; cursor: pointer; padding: 0; font-family: inherit;"
+            @mouseover="$event.target.style.textShadow = '0 0 10px #ff00ff'"
+            @mouseout="$event.target.style.textShadow = 'none'"
+          >
+            ODJAVI SE
+          </button>
+        </template>
+        <button
+          v-else
+          @click="prijava_stranica"
+          style="background: none; border: none; color: #ff00ff; font-size: 12px; font-weight: bold; letter-spacing: 1px; cursor: pointer; padding: 0; font-family: inherit;"
+          @mouseover="$event.target.style.textShadow = '0 0 10px #ff00ff'"
+          @mouseout="$event.target.style.textShadow = 'none'"
+        >
           PRIJAVI SE
         </button>
       </nav>
@@ -38,7 +61,7 @@
           <h2 style="font-size: 32px; color: #00ffff; font-weight: 900; margin-bottom: 15px; letter-spacing: 2px; text-shadow: 0 0 10px #00ffff;">LIVE TURNIRI</h2>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; margin-top: 20px;">
             <div v-for="tournament in tournaments" :key="tournament.id" style="display: flex; gap: 20px; background: rgba(255, 0, 255, 0.05); padding: 20px; border: 2px solid rgba(0, 255, 255, 0.3); border-radius: 5px;">
-              <div style="width: 200px; height: 150px; background-size: cover; background-position: center; border-radius: 3px; flex-shrink: 0; border: 2px solid #00ffff;" :style="{ backgroundImage: `url(${tournament.image})` }"></div>  
+              <div style="width: 200px; height: 150px; background-size: cover; background-position: center; border-radius: 3px; flex-shrink: 0; border: 2px solid #00ffff;" :style="{ backgroundImage: `url(${tournament.image})` }"></div>
               <div style="flex: 1; display: flex; flex-direction: column;">
                 <h3 style="color: #00ffff; font-size: 18px; font-weight: bold; margin: 0 0 10px 0; text-transform: uppercase;">{{ tournament.name }}</h3>
                 <div style="color: #fff; font-size: 13px; margin-bottom: 15px; line-height: 1.8; font-weight: bold;">
@@ -65,7 +88,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import BubbleBuddies from '@/assets/BubbleBuddies.png'
 import GameArenasLogo from '@/assets/gamearenas_naslov1.png'
@@ -76,9 +99,19 @@ let timerInterval = null
 
 const router = useRouter()
 
-const prijava_stranica = () => router.push('/Prijava_korisnika')
 
-const idi_na_Pocetnu = () => {router.push('/')}
+const trenutniKorisnik = ref(JSON.parse(localStorage.getItem('trenutniKorisnik')))
+const jePrijavljen = computed(() => !!trenutniKorisnik.value)
+
+const prijava_stranica = () => router.push('/Prijava_korisnika')
+const idi_na_Pocetnu = () => router.push('/')
+
+const odjavi_se = () => {
+  localStorage.removeItem('trenutniKorisnik')
+  localStorage.removeItem('userId')
+  trenutniKorisnik.value = null
+  router.push('/')
+}
 
 const tournaments = ref([
   {
@@ -102,13 +135,4 @@ const formatTime = (endTimeString) => {
 
 onMounted(() => { timerInterval = setInterval(() => { currentTime.value = Date.now() }, 1000) })
 onUnmounted(() => { clearInterval(timerInterval) })
-
-const odjava = () => {
-  localStorage.removeItem('userId')
-  localStorage.removeItem('ime')
-  localStorage.removeItem('korisnik')
-  
-  jePrijavljen.value = false
-  router.push('/')
-}
 </script>

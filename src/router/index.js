@@ -5,6 +5,7 @@ import Registracija from '../views/Registracija_korisnika.vue'
 import Volonteri from '@/views/Volonteri_prijava.vue'
 import ProfilKorisnik from '../views/ProfilKorisnik.vue'
 import Admin from '@/views/Admin.vue'
+import DodajTurnir from '../views/DodajTurnir.vue'
 
 const routes = [
   {
@@ -36,6 +37,11 @@ const routes = [
     path: '/Admin', 
     name: 'AdminProfil',
     component: Admin
+  },
+  {
+  path: '/DodajTurnir',
+  name: 'DodajTurnir',
+  component: DodajTurnir
   }
 ]
 

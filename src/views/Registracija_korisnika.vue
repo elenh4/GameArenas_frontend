@@ -141,7 +141,7 @@ const krivi_podaci = async () => {
       newsletter: user.prihvacaNewsletter
     })
 
-    router.push('/Registarcija_uspjesna')
+    router.push('/')
 
   } catch (error) {
     alert(

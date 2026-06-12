@@ -44,7 +44,8 @@
 
         <h3 style="color: #00ffff; font-size: 1.1rem; letter-spacing: 1px;">OSNOVNE INFORMACIJE O ARENI</h3>
         <p style="color: #ffffff; line-height: 1.6; opacity: 0.8;">
-          Dobrodošao u sustav Game Arenas. Ovdje možeš pratiti javne rezultate turnira i urediti svoj profil. Nakon odobrenja admina, na ovom mjestu će ti se otključati tajni organizacijski moduli i koordinacija mečeva.
+          Dobrodošao u sustav Game Arenas.
+          Ovdje možeš pratiti javne rezultate turnira i urediti svoj profil. Nakon odobrenja admina, na ovom mjestu će ti se otključati organizacijski moduli i koordinacija mečeva.
         </p>
       </div>
 
@@ -83,7 +84,7 @@
                 <input v-model="volonter.confirmPassword" type="password" required style="width: 100%; max-width: 280px; height: 40px; border-radius: 25px; border: none; padding: 0 20px; font-size: 1rem; text-align: center; color: #000000; background: linear-gradient(90deg, #ff00ff 0%, #00ffff 100%); outline: none; font-weight: bold;" />
               </div>
 
-              <button type="submit" style="display: block; width: 100%; max-width: 180px; height: 45px; margin: 25px auto 0 auto; border-radius: 25px; border: none; font-size: 1.2rem; font-weight: bold; cursor: pointer; background: linear-gradient(90deg, #ff00ff 0%, #00ffff 100%); color: #000000; text-transform: uppercase; transition: all 0.3s ease;" onmouseover="this.style.filter='brightness(1.2)'; this.style.boxShadow='0 0 15px rgba(255, 0, 255, 0.5)';" onmouseout="this.style.filter='none'; this.style.boxShadow='none';">
+              <button type="submit" style="display: block; width: 100%; max-width: 180px; height: 45px; margin: 25px auto 0 auto; border-radius: 25px; border: none; font-size: 1.2rem; font-weight: bold; cursor: pointer; background: linear-gradient(90deg, #ff00ff 0%, #00ffff 100%); color: #000000; text-transform: uppercase;">
                 <span>REGISTRIRAJ SE</span>
               </button>
             </form>
@@ -95,16 +96,16 @@
               <div style="display: flex; flex-direction: column;">
                 <label style="color: #00ffff; font-size: 1rem; margin-bottom: 8px; font-weight: bold; letter-spacing: 1px;">IZABERI TIP TURNIRA</label>
                 <select v-model="volonter.tournamentType" required style="width: 100%; height: 40px; border-radius: 25px; border: none; padding: 0 20px; font-size: 1rem; color: #000000; background: linear-gradient(90deg, #ff00ff 0%, #00ffff 100%); outline: none; font-weight: bold; appearance: none; text-align-last: center;">
-                  <option value="" disabled selected hidden style="background-color: #0a0e27; color: #00ffff; font-weight: bold;">IZABERI...</option>
-                  <option value="social" style="background-color: #0a0e27; color: #00ffff; font-weight: bold;">SOCIAL GAMES TURNIRI</option>
-                  <option value="gaming" style="background-color: #0a0e27; color: #00ffff; font-weight: bold;">GAMING TURNIRI</option>
-                  <option value="oba" style="background-color: #0a0e27; color: #00ffff; font-weight: bold;">OBA TIPA TURNIRA</option>
+                  <option value="" disabled selected hidden>IZABERI...</option>
+                  <option value="social">SOCIAL GAMES TURNIRI</option>
+                  <option value="gaming">GAMING TURNIRI</option>
+                  <option value="oba">OBA TIPA TURNIRA</option>
                 </select>
               </div>
 
               <div style="display: flex; flex-direction: column;">
                 <label style="color: #00ffff; font-size: 1rem; margin-bottom: 8px; font-weight: bold; letter-spacing: 1px;">ZAŠTO ŽELIŠ VOLONTIRATI?</label>
-                <textarea v-model="volonter.motivation" required rows="4" style="width: 100%; border-radius: 15px; border: none; padding: 15px; font-size: 1rem; color: #000000; background: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%); outline: none; font-weight: bold; resize: none; font-family: Arial, sans-serif;"></textarea>
+                <textarea v-model="volonter.motivation" required rows="4" style="width: 100%; border-radius: 15px; border: none; padding: 15px; font-size: 1rem; color: #000000; background: linear-gradient(135deg, #ff00ff 0%, #00ffff 100%); outline: none; font-weight: bold; resize: none;"></textarea>
               </div>
 
               <label style="display: flex; align-items: flex-start; gap: 15px; color: #ffffff; font-size: 14px; font-weight: bold; line-height: 1.4; letter-spacing: 0.5px; cursor: pointer;">
@@ -161,7 +162,7 @@ onMounted(() => {
 
 const volonter_registracija = async () => {
   if (volonter.password !== volonter.confirmPassword) {
-    alert('Lozinka i potvrda lozinke se ne podudaraju!')
+    console.error('Lozinka i potvrda lozinke se ne podudaraju!')
     return
   }
 
@@ -187,7 +188,7 @@ const volonter_registracija = async () => {
     ulogiraniVolonter.value = novi_korisnik
 
   } catch (error) {
-    alert(error.response?.data?.message || 'Greška pri slanju prijave. Pokušajte ponovno.')
+    console.error('Greška pri slanju prijave:', error.response?.data?.message || error.message)
   }
 }
 
@@ -195,7 +196,7 @@ const Pocetna_stranica = () => { router.push('/') }
 const Prijava_stranica = () => { router.push('/prijava_stranica') }
 
 const odjaviSe = () => {
-    localStorage.removeItem('trenutniKorisnik')
+  localStorage.removeItem('trenutniKorisnik')
   ulogiraniVolonter.value = { ime: '', prezime: '', uloga: '', odobren: false }
   router.push('/')
 }

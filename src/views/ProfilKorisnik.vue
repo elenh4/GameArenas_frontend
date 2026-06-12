@@ -3,7 +3,13 @@
     <header style="padding: 10px 30px; border-bottom: 2px solid #00ffff;">
       <nav style="display: flex; justify-content: center; gap: 30px; margin-bottom: 10px; align-items: center;">
         <span style="color: #00ffff; font-size: 12px; font-weight: bold; cursor: pointer;" @click="idi_na_Pocetnu">POČETNA STRANICA</span>
-        <img :src="logo" alt="Game Arenas" style="max-width: 200px;">
+        <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px;" @click="drustvene_igrice_prikaz">SOCIAL GAMES</span>
+        <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px; cursor: pointer;" @click="router.push('/Turniri_esport_prikaz')">ESPORT TURNIRI</span>
+        <img :src="logo" alt="Game Arenas" style="max-width: 400px;">
+        <br>
+        <br>
+        <br>
+        <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px;" @click="idi_na_scoreboard">SCOREBOARD</span>
         <span style="color: #00ffff; font-size: 12px; font-weight: bold; cursor: pointer;" @click="odjavi_se">ODJAVI SE</span>
       </nav>
     </header>
@@ -87,9 +93,10 @@ const dohvatiMojeTurnire = async () => {
   }
 }
 
-const idi_na_Pocetnu = () => {
-  router.push('/')
-}
+const idi_na_Pocetnu = () => {router.push('/')}
+const idi_na_scoreboard=() =>{ router.push('/Scoreboard')}
+const Turniri_esport_prikaz =() => { router.push('/Turniri_esport_prikaz')}
+const drustvene_igrice_prikaz = () => { router.push('/Turniri_drustvene_prikaz')}
 
 const odjavi_se = () => {
   localStorage.removeItem('trenutniKorisnik')

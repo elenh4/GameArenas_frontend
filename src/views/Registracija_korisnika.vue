@@ -90,9 +90,7 @@
               DESERVES A CHAMPION."
             </p>
           </div>
-
         </div>
-
       </div>
     </main>
   </div>
@@ -104,11 +102,11 @@ import { useRouter } from 'vue-router'
 import axios from 'axios'
 import GameArenasLogo from '@/assets/gamearenas_naslov1.png'
 
-const Pocetna_stranica = () => {router.push('/')}
-const Prijava_stranica = () => {router.push('/Prijava_korisnika' )}
-
-const logo = ref(GameArenasLogo)
 const router = useRouter()
+const logo = ref(GameArenasLogo)
+
+const Pocetna_stranica = () => { router.push('/') }
+const Prijava_stranica = () => { router.push('/Prijava_korisnika') }
 
 const user = reactive({
   firstName: '',
@@ -125,7 +123,7 @@ const ucitavanje = ref(false)
 
 const krivi_podaci = async () => {
   if (user.password !== user.confirmPassword) {
-    alert('Lozinka i ponovna lozinka se ne podudaraju!')
+    console.error('Lozinka i ponovna lozinka se ne podudaraju!')
     return
   }
 
@@ -140,14 +138,9 @@ const krivi_podaci = async () => {
       username: user.username,
       newsletter: user.prihvacaNewsletter
     })
-
     router.push('/')
-
   } catch (error) {
-    alert(
-      error.response?.data?.message ||
-      'Greška pri registraciji. Pokušajte ponovno.'
-    )
+    console.error('Greška pri registraciji:', error.response?.data?.message || error.message)
   } finally {
     ucitavanje.value = false
   }

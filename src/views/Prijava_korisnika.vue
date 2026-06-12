@@ -4,7 +4,7 @@
     <nav style="display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; letter-spacing: 1px; color: #00ffff; padding: 10px 40px;">
       <div style="display: flex; gap: 30px;">
         <span style="color: #00ffff; cursor: pointer;" @click="Pocetna_stranica">POČETNA STRANICA</span>
-        <span>SOCIAL GAMES TURNIRI</span>
+        <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px; cursor: pointer;" @click="router.push('/Turniri_drustvene_prikaz')">SOCIAL GAMES</span>
       </div>
       <div style="display: flex; gap: 30px; color: #ff00ff; text-align: right;">
         <span>GAMING TURNIRI SCOREBOARD</span>

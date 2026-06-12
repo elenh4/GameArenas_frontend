@@ -4,13 +4,13 @@
     <header style="padding: 10px 30px; border-bottom: 2px solid #00ffff;">
       <nav style="display: flex; justify-content: center; gap: 30px; margin-bottom: 10px; flex-wrap: wrap; align-items: center;">
         <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px; cursor: pointer;" @click="router.push('/')">POČETNA STRANICA</span>
-        <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px;">SOCIAL GAMES</span>
-        <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px;">TURNIRI</span>
+        <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px; cursor: pointer;" @click="router.push('/Turniri_drustvene_prikaz')">SOCIAL GAMES</span>
+        
 
         <div style="text-align: center; margin: 5px 20px;">
           <img :src="logo" alt="Game Arenas" style="display: block; margin: 0 auto; max-width: 500px; width: 100%; height: auto;">
         </div>
-        <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px;">SCOREBOARD</span>
+        <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px; cursor: pointer;" @click="router.push('/Scoreboard')">SCOREBOARD</span>
 
         <template v-if="jePrijavljen">
           <button @click="idi_na_profil" style="background: none; border: none; color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px; cursor: pointer; padding: 0; font-family: inherit;">
@@ -53,19 +53,25 @@
             <p style="margin: 0;"><span style="color: #00ffff;">VRIJEME : </span>{{ t.vrijeme }}</p>
             <p style="margin: 0;"><span style="color: #00ffff;">MAX IGRAČA : </span>{{ t.maxIgraca }}</p>
           </div>
+          
           <div v-if="t.nagrade && t.nagrade.length > 0">
             <p style="color: #ff00ff; font-weight: bold; font-size: 13px; margin-bottom: 5px;">NAGRADE :</p>
             <ol style="margin: 0; padding-left: 20px; color: #fff; font-size: 13px;">
               <li v-for="(nagrada, index) in t.nagrade" :key="index" style="margin: 3px 0; font-weight: bold;">{{ nagrada }}</li>
             </ol>
           </div>
+
           <button
+            v-if="mozeSePrijaviti(t)"
             style="width: 100%; padding: 12px; background: linear-gradient(90deg, #ff00ff, #00ffff); color: #000; border: none; font-size: 13px; font-weight: bold; cursor: pointer; letter-spacing: 1px; margin-top: auto;"
             @mouseover="$event.target.style.opacity = '0.8'"
             @mouseout="$event.target.style.opacity = '1'"
             @click="prijaviSeNaTurnir(t._id)">
             PRIJAVI SE NA TURNIR
-            </button>
+          </button>
+          <div v-else style="width: 100%; padding: 12px; background: #333; color: #888; border: none; font-size: 13px; font-weight: bold; text-align: center; letter-spacing: 1px; margin-top: auto;">
+            PRIJAVE ZATVORENE
+          </div>
         </div>
       </div>
     </main>
@@ -85,6 +91,13 @@ const turniri = ref([])
 
 const trenutniKorisnik = ref(JSON.parse(localStorage.getItem('trenutniKorisnik')))
 const jePrijavljen = computed(() => !!trenutniKorisnik.value)
+
+
+
+const mozeSePrijaviti = (t) => {
+  const datumTurnira = new Date(`${t.datum}T${t.vrijeme}`);
+  return datumTurnira > new Date();
+}
 
 const idi_na_profil = () => {
     if (trenutniKorisnik.value?.uloga === 'admin') {
@@ -106,15 +119,13 @@ const dohvatiTurnire = async () => {
         const res = await axios.get('http://localhost:3000/api/turniri')
         turniri.value = res.data.filter(t => t.vrsta === 'esport')
     } catch (error) {
-        console.error('Greška pri dohvatu turnira:', error)
+        console.error(error)
     } finally {
         ucitavanje.value = false
     }
 }
 
-onMounted(() => {
-    dohvatiTurnire()
-})
+onMounted(dohvatiTurnire)
 
 const prijaviSeNaTurnir = async (turnirId) => {
     if (!trenutniKorisnik.value) {

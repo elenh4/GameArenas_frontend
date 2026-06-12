@@ -3,7 +3,7 @@
         <header style="padding: 10px 30px; border-bottom: 2px solid #00ffff;">
         <nav style="display: flex; justify-content: center; gap: 30px; margin-bottom: 10px; flex-wrap: wrap; align-items: center;">
             <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px; cursor: pointer;" @click="router.push('/')">POČETNA STRANICA</span>
-            <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px;">SOCIAL GAMES</span>
+            <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px; cursor: pointer;" @click="router.push('/Turniri_drustvene_prikaz')">SOCIAL GAMES</span>
             <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px; cursor: pointer;" @click="router.push('/Turniri_esport_prikaz')">ESPORT TURNIRI</span>
             
             <div style="text-align: center; margin: 5px 20px;">

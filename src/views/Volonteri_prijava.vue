@@ -35,7 +35,7 @@
 
         <div style="background-color: #0f143c; border: 2px dashed #ff00ff; padding: 25px; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 0 15px rgba(255, 0, 255, 0.2);">
           <h3 style="color: #ff00ff; margin-top: 0; font-size: 1.1rem; letter-spacing: 1px; display: flex; align-items: center; gap: 10px;">
-            ⏳ STATUS PROFILA: ČEKA SE ODOBRENJE ADMINISTRATORA
+            STATUS PROFILA: ČEKA SE ODOBRENJE ADMINISTRATORA
           </h3>
           <p style="color: #ffffff; line-height: 1.6; font-size: 0.95rem; font-weight: bold; margin-bottom: 0;">
             Trenutno imaš osnovni pristup areni. Kako bi mogao/la vidjeti <span style="color: #00ffff;">napredne informacije o funkcioniranju turnira</span>, tablice, rasporede i administratorske ovlasti koje obični korisnici ne smiju vidjeti, administrator mora ručno odobriti tvoj profil. 

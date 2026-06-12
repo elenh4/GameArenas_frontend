@@ -47,7 +47,8 @@ const routes = [
   { path: '/Turniri_esport_prikaz', 
     name: 'TurniriEsport', 
     component: TurniriEsport
-  }
+  },
+  { path:}
 ]
 
 const router = createRouter({

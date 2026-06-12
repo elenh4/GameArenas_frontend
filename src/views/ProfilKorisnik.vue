@@ -21,7 +21,6 @@
         
         <div style="flex: 1; color: #00ffff; font-weight: bold; font-size: 20px; line-height: 2;">
           <p>USERNAME : <span style="color: #fff;">{{ user.username }}</span></p>
-          <p>DRŽAVA : <span style="color: #fff;">{{ user.drzava }}</span></p>
           <p>LEAGUE : <span style="color: #fff;">{{ user.league }}</span></p>
           
           <h2 style="color: #ff00ff; margin-top: 30px; font-size: 24px; text-shadow: 0 0 10px #ff00ff;">AKTIVNI TURNIRI :</h2>

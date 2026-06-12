@@ -75,3 +75,63 @@
   </div>
 </template>
 
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import axios from 'axios'
+import GameArenasLogo from '@/assets/gamearenas_naslov1.png'
+
+const logo = ref(GameArenasLogo)
+const router = useRouter()
+const ucitavanje = ref(true)
+const turniri = ref([])
+
+const trenutniKorisnik = ref(JSON.parse(localStorage.getItem('trenutniKorisnik')))
+const jePrijavljen = computed(() => !!trenutniKorisnik.value)
+
+const idi_na_profil = () => {
+    if (trenutniKorisnik.value?.uloga === 'admin') {
+        router.push('/Admin')
+    } else {
+        router.push('/ProfilKorisnik')
+    }
+}
+
+const odjavi_se = () => {
+    localStorage.removeItem('trenutniKorisnik')
+    localStorage.removeItem('userId')
+    trenutniKorisnik.value = null
+    router.push('/')
+}
+
+const dohvatiTurnire = async () => {
+    try {
+        const res = await axios.get('http://localhost:3000/api/turniri')
+        turniri.value = res.data.filter(t => t.vrsta === 'social')
+    } catch (error) {
+        console.error('Greška pri dohvatu turnira:', error)
+    } finally {
+        ucitavanje.value = false
+    }
+}
+
+const prijaviSeNaTurnir = async (turnirId) => {
+    if (!trenutniKorisnik.value) {
+        router.push('/Prijava_korisnika')
+        return
+    }
+    try {
+        const res = await axios.post(`http://localhost:3000/api/turniri/${turnirId}/prijava`, {
+            userId: trenutniKorisnik.value.id
+        })
+        alert(res.data.message)
+        dohvatiTurnire()
+    } catch (error) {
+        alert(error.response?.data?.message || 'Greška pri prijavi.')
+    }
+}
+
+onMounted(() => {
+    dohvatiTurnire()
+})
+</script>

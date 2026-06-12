@@ -7,6 +7,8 @@ import ProfilKorisnik from '../views/ProfilKorisnik.vue'
 import Admin from '@/views/Admin.vue'
 import DodajTurnir from '../views/DodajTurnir.vue'
 import TurniriEsport from '../views/Turniri_esport_prikaz.vue'
+import DrustveneIgre from '../views/Turniri_drustvene_prikaz.vue'
+import Scoreboard from '../views/Scoreboard.vue'
 
 const routes = [
   {
@@ -40,9 +42,9 @@ const routes = [
     component: Admin
   },
   {
-  path: '/DodajTurnir',
-  name: 'DodajTurnir',
-  component: DodajTurnir
+    path: '/DodajTurnir',
+    name: 'DodajTurnir',
+    component: DodajTurnir
   },
   { 
     path: '/Turniri_esport_prikaz', 
@@ -53,6 +55,11 @@ const routes = [
     path: '/Turniri_drustvene_prikaz',
     name: 'DruštveneIgre',
     component: DrustveneIgre
+  },
+  { 
+    path: '/Scoreboard', 
+    name: 'Scoreboard', 
+    component: Scoreboard 
   }
 ]
 

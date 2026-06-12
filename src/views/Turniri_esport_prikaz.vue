@@ -42,7 +42,10 @@
         Trenutno nema aktivnih esport turnira.
       </div>
 
-      
+      <div v-else style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto;">
+        <div v-for="t in turniri" :key="t._id" style="border: 2px solid #00ffff; background: rgba(0, 255, 255, 0.05); padding: 25px; display: flex; flex-direction: column; gap: 15px;">
+          <div style="width: 100%; height: 180px; background: #1a1a3a; border: 1px solid #00ffff; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+            <img v-if="t.url" :src="t.url" style="width: 100%; height: 100%; object-fit: cover;" />
           </div>
           <h2 style="color: #00ffff; font-size: 20px; font-weight: bold; letter-spacing: 1px; margin: 0; text-transform: uppercase;">{{ t.naziv }}</h2>
           <div style="color: #fff; font-size: 13px; line-height: 2; font-weight: bold;">

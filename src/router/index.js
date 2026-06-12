@@ -44,11 +44,16 @@ const routes = [
   name: 'DodajTurnir',
   component: DodajTurnir
   },
-  { path: '/Turniri_esport_prikaz', 
+  { 
+    path: '/Turniri_esport_prikaz', 
     name: 'TurniriEsport', 
     component: TurniriEsport
   },
-  { path:}
+  { 
+    path: '/Turniri_drustvene_prikaz',
+    name: 'DruštveneIgre',
+    component: DrustveneIgre
+  }
 ]
 
 const router = createRouter({

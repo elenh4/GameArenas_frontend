@@ -9,6 +9,8 @@ import DodajTurnir from '../views/DodajTurnir.vue'
 import TurniriEsport from '../views/Turniri_esport_prikaz.vue'
 import DrustveneIgre from '../views/Turniri_drustvene_prikaz.vue'
 import Scoreboard from '../views/Scoreboard.vue'
+import Pregled_profila from '../views/Pregled_profila.vue'
+import Novosti from '../views/Novosti.vue'
 
 const routes = [
   {
@@ -60,6 +62,16 @@ const routes = [
     path: '/Scoreboard', 
     name: 'Scoreboard', 
     component: Scoreboard 
+  },
+  {
+    path: '/ProfilKorisnik/:id',
+    name: 'PregledProfila',
+    component: Pregled_profila
+  }   ,
+  {
+    path: '/Novosti',
+    name: 'Novosti',
+    component: Novosti
   }
 ]
 

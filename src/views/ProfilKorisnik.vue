@@ -80,7 +80,6 @@ const user = ref({
 })
 
 const aktivniTurniri = ref([])
-
 const dohvatiMojeTurnire = async () => {
   try {
     const res = await axios.get('http://localhost:3000/api/turniri')
@@ -90,8 +89,23 @@ const dohvatiMojeTurnire = async () => {
   } catch (error) {
     console.error('Greška pri dohvatu turnira:', error)
   }
+
+  try {
+    const resKorisnik = await axios.get(`http://localhost:3000/api/korisnici/${spremljeniKorisnik?.id}`)
+    const bodovi = resKorisnik.data.bodovi || 0
+    user.value.league = getLiga(bodovi)
+  } catch (error) {
+    console.error('Greška pri dohvatu bodova:', error)
+  }
 }
 
+const getLiga = (bodovi) => {
+  if (bodovi >= 2000) return 'PLATINUM'
+  if (bodovi >= 1000) return 'GOLD'
+  if (bodovi >= 500) return 'SILVER'
+  if (bodovi >= 200) return 'BRONZE'
+  return 'NO LEAGUE'
+}
 const idi_na_Pocetnu = () => {router.push('/')}
 const idi_na_scoreboard=() =>{ router.push('/Scoreboard')}
 const Turniri_esport_prikaz =() => { router.push('/Turniri_esport_prikaz')}

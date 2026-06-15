@@ -58,7 +58,24 @@ const nova = ref({ naslov: '', sadrzaj: '', datum: '' })
 const trenutniKorisnik = ref(JSON.parse(localStorage.getItem('trenutniKorisnik')))
 const jePrijavljen = computed(() => !!trenutniKorisnik.value)
 
+const dohvatiNovosti = async () => {
+    try {
+        const res = await axios.get('http://localhost:3000/api/novosti')
+        novosti.value = res.data
+    } catch (error) {
+        console.error("Greška pri dohvatu:", error)
+    }
+}
 
+const spremiNovost = async () => {
+    try {
+        await axios.post('http://localhost:3000/api/novosti', nova.value)
+        nova.value = { naslov: '', sadrzaj: '', datum: '' }
+        dohvatiNovosti()
+    } catch (error) {
+        console.error("Greška pri spremanju:", error)
+    }
+}
 
 const odjavi_se = () => {
     localStorage.clear()

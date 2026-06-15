@@ -60,5 +60,37 @@ const noviBodovi = ref(0);
 const trenutniKorisnik = JSON.parse(localStorage.getItem('trenutniKorisnik'));
 const jeAdmin = computed(() => trenutniKorisnik?.uloga === 'admin');
 
+const odredi_ligu = (bodovi) => {
+    if (bodovi >= 2000) return { naziv: 'PLATINUM', boja: '#e5e4e2' };
+    if (bodovi >= 1000) return { naziv: 'GOLD', boja: '#ffd700' };
+    if (bodovi >= 500) return { naziv: 'SILVER', boja: '#c0c0c0' };
+    if (bodovi >= 200) return { naziv: 'BRONZE', boja: '#cd7f32' };
+    return { naziv: 'NO LEAGUE', boja: '#7f8c8d' };
+};
 
+const dohvatiProfil = async () => {
+    try {
+        const userId = route.params.id;
+        const res = await axios.get(`http://localhost:3000/api/profil/${userId}`);
+        prikazaniUser.value = res.data;
+        noviBodovi.value = res.data.bodovi;
+    } catch (error) {
+        console.error("Greška pri dohvatu profila", error);
+    }
+};
+
+const azurirajBodove = async () => {
+    if (!jeAdmin.value) return;
+    try {
+        await axios.patch(`http://localhost:3000/api/scoreboard/${prikazaniUser.value._id}/bodovi`, {
+        bodovi: noviBodovi.value
+        });
+        dohvatiProfil();
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+
+onMounted(dohvatiProfil);
 </script>

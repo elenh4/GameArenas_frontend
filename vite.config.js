@@ -1,15 +1,18 @@
+import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
+import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue'
-import path from 'path'
+import vueDevTools from 'vite-plugin-vue-devtools'
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    vueDevTools(),
+    tailwindcss(),
+  ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src') 
-    }
+      '@': fileURLToPath(new URL('./src', import.meta.url))
+    },
   },
-  server: {
-    port: 5173
-  }
 })

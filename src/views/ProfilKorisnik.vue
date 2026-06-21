@@ -17,6 +17,15 @@
     <main style="padding: 40px; display: flex; flex-direction: column; align-items: center;">
       <h1 style="font-size: 48px; color: #00ffff; text-shadow: 0 0 15px #00ffff; margin-bottom: 40px; letter-spacing: 3px;">TVOJ PROFIL</h1>
 
+      <div v-if="spremljeniKorisnik?.uloga === 'volonter'" :style="'width: 100%; max-width: 900px; margin-bottom: 30px; padding: 20px 25px; border-radius: 8px; border: 2px solid ' + (spremljeniKorisnik?.odobren ? '#00ff88' : '#ffaa00') + '; background: ' + (spremljeniKorisnik?.odobren ? 'rgba(0,255,136,0.08)' : 'rgba(255,170,0,0.08)')">
+        <p :style="'margin: 0; font-weight: bold; font-size: 14px; letter-spacing: 1px; color: ' + (spremljeniKorisnik?.odobren ? '#00ff88' : '#ffaa00')">
+          {{ spremljeniKorisnik?.odobren ? 'VOLONTER — ODOBREN OD ADMINISTRATORA' : 'VOLONTER — ČEKA SE ODOBRENJE ADMINISTRATORA' }}
+        </p>
+        <p style="margin: 8px 0 0 0; color: #fff; font-size: 13px; opacity: 0.8;">
+          {{ spremljeniKorisnik?.odobren ? 'Imaš pristup naprednim volonterskim opcijama.' : 'Trenutno imaš osnovni pristup. Administrator mora ručno odobriti tvoj volonterski status.' }}
+        </p>
+      </div>
+
       <div style="display: flex; gap: 60px; align-items: flex-start; max-width: 900px; width: 100%;">
         
         <div style="flex: 1; color: #00ffff; font-weight: bold; font-size: 20px; line-height: 2;">
@@ -61,39 +70,46 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import GameArenasLogo from '@/assets/gamearenas_naslov1.png'
+import { API_URL } from '@/config/api'
 
 const logo = ref(GameArenasLogo)
 const router = useRouter()
 
-const spremljeniKorisnik = JSON.parse(localStorage.getItem('trenutniKorisnik'))
+const spremljeniKorisnik = ref(JSON.parse(localStorage.getItem('trenutniKorisnik')))
 
-if (!spremljeniKorisnik) {
+if (!spremljeniKorisnik.value) {
   router.push('/Prijava_korisnika')
-} else if (spremljeniKorisnik.uloga === 'admin') {
+} else if (spremljeniKorisnik.value.uloga === 'admin') {
   router.push('/Admin')
 }
 
 const user = ref({
-  username: spremljeniKorisnik?.username || 'Korisnik',
+  username: spremljeniKorisnik.value?.username || 'Korisnik',
   drzava: 'HRVATSKA',
   league: 'BRONZE'
 })
 
 const aktivniTurniri = ref([])
+
 const dohvatiMojeTurnire = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/turniri')
+    const res = await axios.get(`${API_URL}/api/turniri`)
     aktivniTurniri.value = res.data.filter(t =>
-      t.prijavljeni && t.prijavljeni.includes(spremljeniKorisnik?.id)
+      t.prijavljeni && t.prijavljeni.includes(spremljeniKorisnik.value?.id)
     )
   } catch (error) {
     console.error('Greška pri dohvatu turnira:', error)
   }
 
   try {
-    const resKorisnik = await axios.get(`http://localhost:3000/api/korisnici/${spremljeniKorisnik?.id}`)
+    const resKorisnik = await axios.get(`${API_URL}/api/korisnici/${spremljeniKorisnik.value?.id}`)
     const bodovi = resKorisnik.data.bodovi || 0
     user.value.league = getLiga(bodovi)
+
+    if (spremljeniKorisnik.value?.uloga === 'volonter') {
+      spremljeniKorisnik.value.odobren = resKorisnik.data.odobren
+      localStorage.setItem('trenutniKorisnik', JSON.stringify(spremljeniKorisnik.value))
+    }
   } catch (error) {
     console.error('Greška pri dohvatu bodova:', error)
   }
@@ -106,10 +122,11 @@ const getLiga = (bodovi) => {
   if (bodovi >= 200) return 'BRONZE'
   return 'NO LEAGUE'
 }
-const idi_na_Pocetnu = () => {router.push('/')}
-const idi_na_scoreboard=() =>{ router.push('/Scoreboard')}
-const Turniri_esport_prikaz =() => { router.push('/Turniri_esport_prikaz')}
-const drustvene_igrice_prikaz = () => { router.push('/Turniri_drustvene_prikaz')}
+
+const idi_na_Pocetnu = () => { router.push('/') }
+const idi_na_scoreboard = () => { router.push('/Scoreboard') }
+const Turniri_esport_prikaz = () => { router.push('/Turniri_esport_prikaz') }
+const drustvene_igrice_prikaz = () => { router.push('/Turniri_drustvene_prikaz') }
 
 const odjavi_se = () => {
   localStorage.removeItem('trenutniKorisnik')

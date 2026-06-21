@@ -51,6 +51,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
+import { API_URL } from '@/config/api'
 
 const route = useRoute();
 const router = useRouter();
@@ -71,7 +72,7 @@ const odredi_ligu = (bodovi) => {
 const dohvatiProfil = async () => {
     try {
         const userId = route.params.id;
-        const res = await axios.get(`http://localhost:3000/api/profil/${userId}`);
+        const res = await axios.get(`${API_URL}/api/profil/${userId}`);
         prikazaniUser.value = res.data;
         noviBodovi.value = res.data.bodovi;
     } catch (error) {
@@ -82,7 +83,7 @@ const dohvatiProfil = async () => {
 const azurirajBodove = async () => {
     if (!jeAdmin.value) return;
     try {
-        await axios.patch(`http://localhost:3000/api/scoreboard/${prikazaniUser.value._id}/bodovi`, {
+        await axios.patch(`${API_URL}/api/scoreboard/${prikazaniUser.value._id}/bodovi`, {
         bodovi: noviBodovi.value
         });
         dohvatiProfil();

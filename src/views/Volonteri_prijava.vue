@@ -135,6 +135,7 @@
 import { reactive, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
+import { API_URL } from '@/config/api'
 import GameArenasLogo from '@/assets/gamearenas_naslov1.png'
 
 const logo = ref(GameArenasLogo)
@@ -167,7 +168,7 @@ const volonter_registracija = async () => {
   }
 
   try {
-    await axios.post('http://localhost:3000/api/volonteri/register', {
+    await axios.post(`${API_URL}/api/korisnici/volonteri/register`, {
       ime: volonter.firstName,
       prezime: volonter.lastName,
       email: volonter.email,

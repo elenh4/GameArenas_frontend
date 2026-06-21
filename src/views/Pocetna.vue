@@ -56,6 +56,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
+import { API_URL } from '@/config/api'
 import GameArenasLogo from '@/assets/gamearenas_naslov1.png'
 
 const logo = ref(GameArenasLogo)
@@ -66,7 +67,7 @@ const jePrijavljen = computed(() => !!trenutniKorisnik.value)
 
 const dohvatiPodatke = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/api/turniri')
+    const res = await axios.get(`${API_URL}/api/turniri`)
     const danas = new Date()
     danas.setHours(0, 0, 0, 0) 
     turniri.value = res.data.filter(t => {

@@ -50,6 +50,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import GameArenasLogo from '@/assets/gamearenas_naslov1.png'
+import { API_URL } from '@/config/api'
 
 const logo = ref(GameArenasLogo)
 const router = useRouter()
@@ -60,7 +61,7 @@ const jePrijavljen = computed(() => !!trenutniKorisnik.value)
 
 const dohvatiNovosti = async () => {
     try {
-        const res = await axios.get('http://localhost:3000/api/novosti')
+        const res = await axios.get(`${API_URL}/api/novosti`)
         novosti.value = res.data
     } catch (error) {
         console.error("Greška pri dohvatu:", error)
@@ -69,7 +70,7 @@ const dohvatiNovosti = async () => {
 
 const spremiNovost = async () => {
     try {
-        await axios.post('http://localhost:3000/api/novosti', nova.value)
+        await axios.post(`${API_URL}/api/novosti`, nova.value)
         nova.value = { naslov: '', sadrzaj: '', datum: '' }
         dohvatiNovosti()
     } catch (error) {

@@ -183,6 +183,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import GameArenasLogo from '@/assets/gamearenas_naslov1.png'
+import { API_URL } from '@/config/api'
 
 const logo = ref(GameArenasLogo)
 const router = useRouter()
@@ -199,14 +200,14 @@ const korisniciPoRedoslijedu = computed(() =>
 
 const dohvatiPodatke = async () => {
   try {
-    const resKorisnici = await axios.get('http://localhost:3000/api/korisnici')
+    const resKorisnici = await axios.get(`${API_URL}/api/korisnici`)
     korisnici.value = resKorisnici.data
   } catch (error) {
     console.error('Greška pri dohvatu korisnika:', error)
   }
 
   try {
-    const resTurniri = await axios.get('http://localhost:3000/api/turniri')
+    const resTurniri = await axios.get(`${API_URL}/api/turniri`)
     const svi = resTurniri.data
 
     const sad = new Date()
@@ -223,7 +224,7 @@ const dohvatiPodatke = async () => {
   }
 
   try {
-    const resVolonteri = await axios.get('http://localhost:3000/api/korisnici/volonteri/neodobreni')
+    const resVolonteri = await axios.get(`${API_URL}/api/korisnici/volonteri/neodobreni`)
     neodobreniVolonteri.value = resVolonteri.data
   } catch (error) {
     console.error('Greška pri dohvatu volontera:', error)
@@ -232,7 +233,7 @@ const dohvatiPodatke = async () => {
 
 const odobriVolontera = async (id) => {
   try {
-    await axios.post(`http://localhost:3000/api/korisnici/${id}/odobri`)
+    await axios.post(`${API_URL}/api/korisnici/volonteri/${id}/odobri`)
     alert('Volonter odobren!')
     dohvatiPodatke()
   } catch (error) {
@@ -242,7 +243,7 @@ const odobriVolontera = async (id) => {
 
 const odbijVolontera = async (id) => {
   try {
-    await axios.delete(`http://localhost:3000/api/korisnici/${id}`)
+    await axios.delete(`${API_URL}/api/korisnici/${id}`)
     alert('Volonter odbijen i obrisan.')
     dohvatiPodatke()
   } catch (error) {
@@ -257,7 +258,7 @@ const upisiRezultate = async (turnir) => {
       bodovi: parseInt(rezultati.value[turnir._id + '_' + igrac._id] || 0)
     }))
 
-    await axios.post(`http://localhost:3000/api/turniri/${turnir._id}/rezultati`, {
+    await axios.post(`${API_URL}/api/turniri/${turnir._id}/rezultati`, {
       rezultati: rezultatiZaTurnir
     })
 

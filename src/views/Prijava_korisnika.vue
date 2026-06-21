@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: #0a0e27; color: #00ffff; min-height: 100vh; font-family: Arial, sans-serif; padding: 20px; box-sizing: border-box;">
+  <div style="background-color: #0a0e27; color: #00ffff; min-height: 100vh; font-family: Arial, sans-serif; padding: 20px; box-sizing: border-box; position: relative;">
     
     <nav style="display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; letter-spacing: 1px; color: #00ffff; padding: 10px 40px;">
       <div style="display: flex; gap: 30px;">
@@ -48,18 +48,34 @@
         </form>
       </div>
     </main>
+
+    <!-- BANNER ZA VOLONTERE -->
+    <div :style="'position: fixed; bottom: 30px; right: 30px; width: 280px; background: #0f143c; border: 2px solid #ff00ff; border-radius: 10px; padding: 20px; box-shadow: 0 0 20px rgba(255, 0, 255, 0.3); z-index: 100; transition: all 0.4s ease; transform: ' + (prikaziBanner ? 'translateX(0)' : 'translateX(120%)') + '; opacity: ' + (prikaziBanner ? '1' : '0')">
+      <span @click="prikaziBanner = false" style="position: absolute; top: 8px; right: 12px; color: #888; cursor: pointer; font-size: 16px; font-weight: bold;">×</span>
+      <h3 style="color: #ff00ff; font-size: 14px; margin: 0 0 10px 0; letter-spacing: 1px;">ŽELIŠ POMOĆI?</h3>
+      <p style="color: #fff; font-size: 12px; line-height: 1.5; margin: 0 0 15px 0;">
+        Pridruži se kao volonter i pomozi u organizaciji turnira!
+      </p>
+      <button
+        @click="router.push('/Volonteri_prijava')"
+        style="width: 100%; padding: 10px; background: linear-gradient(90deg, #ff00ff, #00ffff); color: #000; border: none; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; letter-spacing: 1px;"
+      >
+        PRIJAVI SE KAO VOLONTER
+      </button>
+    </div>
   </div>
 </template>
-
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import GameArenasLogo from '@/assets/gamearenas_naslov1.png'
+import { API_URL } from '@/config/api'
 
 const logo = ref(GameArenasLogo)
 const ucitavanje_stranice = ref(false)
 const errorMessage = ref('')
 const forma = reactive({ email: '', password: '' })
+const prikaziBanner = ref(false)
 
 const router = useRouter()
 
@@ -71,7 +87,7 @@ const prijavi_se = async () => {
   errorMessage.value = ''
   
   try {
-    const response = await fetch('http://localhost:3000/api/korisnici/prijava', {
+    const response = await fetch(`${API_URL}/api/korisnici/prijava`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: forma.email, lozinka: forma.password })
@@ -83,9 +99,9 @@ const prijavi_se = async () => {
     localStorage.setItem('userId', data.user.id) 
 
     if (data.user.uloga === 'admin') {
-    router.push('/Admin')
-    }else {
-    router.push('/ProfilKorisnik')
+      router.push('/Admin')
+    } else {
+      router.push('/ProfilKorisnik')
     }
     
   } catch (error) {
@@ -94,4 +110,9 @@ const prijavi_se = async () => {
     ucitavanje_stranice.value = false
   }
 }
+onMounted(() => {
+  setTimeout(() => {
+    prikaziBanner.value = true
+  }, 1500)
+})
 </script>

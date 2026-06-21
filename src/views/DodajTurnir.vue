@@ -133,6 +133,7 @@
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
+import { API_URL } from '@/config/api'
 import GameArenasLogo from '@/assets/gamearenas_naslov1.png'
 
 const logo = ref(GameArenasLogo)
@@ -169,7 +170,7 @@ const spremiTurnir = async () => {
     ucitavanje.value = true
 
     try {
-        await axios.post('http://localhost:3000/api/turniri', {
+        await axios.post(`${API_URL}/api/turniri`, {
         naziv: forma.naziv,
         vrsta: forma.vrsta,
         maxIgraca: forma.maxIgraca,

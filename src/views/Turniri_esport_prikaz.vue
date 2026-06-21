@@ -81,6 +81,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 import GameArenasLogo from '@/assets/gamearenas_naslov1.png'
+import { API_URL } from '@/config/api'
 
 const logo = ref(GameArenasLogo)
 const router = useRouter()
@@ -114,7 +115,7 @@ const odjavi_se = () => {
 
 const dohvatiTurnire = async () => {
     try {
-        const res = await axios.get('http://localhost:3000/api/turniri')
+        const res = await axios.get(`${API_URL}/api/turniri`)
         turniri.value = res.data.filter(t => t.vrsta === 'esport')
     } catch (error) {
         console.error(error)
@@ -131,7 +132,7 @@ const prijaviSeNaTurnir = async (turnirId) => {
         return
     }
     try {
-        const res = await axios.post(`http://localhost:3000/api/turniri/${turnirId}/prijava`, {
+        const res = await axios.post(`${API_URL}/api/turniri/${turnirId}/prijava`, {
             userId: trenutniKorisnik.value.id
         })
         alert(res.data.message)

@@ -83,6 +83,7 @@ import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import GameArenasLogo from '@/assets/gamearenas_naslov1.png';
+import { API_URL } from '@/config/api'
 
 const router = useRouter();
 const logo = ref(GameArenasLogo);
@@ -108,7 +109,7 @@ const odrediRang = (bodovi) => {
 
 const dohvatiRezultate = async () => {
     try {
-        const res = await axios.get('http://localhost:3000/api/korisnici');
+        const res = await axios.get(`${API_URL}/api/korisnici`);
         korisnici.value = res.data;
     } catch (err) {
         console.error(err);
@@ -126,7 +127,7 @@ const ponistiIzmjenu = () => {
 
 const spremiBodove = async (userId) => {
     try {
-        await axios.patch(`http://localhost:3000/api/scoreboard/${userId}/bodovi`, {
+        await axios.patch(`${API_URL}/api/scoreboard/${userId}/bodovi`, {
             bodovi: noviBodovi.value
         });
         korisnikZaIzmjenu.value = null;

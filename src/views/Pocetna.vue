@@ -2,13 +2,13 @@
   <div style="margin: 0; padding: 0; background: #0a0e27; color: #00ffff; font-family: Arial, sans-serif; min-height: 100vh;">
     <header style="padding: 10px 30px; border-bottom: 2px solid #00ffff;">
       <nav style="display: flex; position: relative; gap: 30px; margin-bottom: 10px; flex-wrap: wrap; align-items: center;">
+        <br>
         <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px; cursor: pointer;" @click="idi_na_Pocetnu">POČETNA STRANICA</span>
         <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px; cursor: pointer;" @click="drustvene_igrice_prikaz">SOCIAL GAMES</span>
         <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px; cursor: pointer;" @click="router.push('/Turniri_esport_prikaz')">ESPORT TURNIRI</span>
         <div style="text-align: center; margin: 5px 20px;">
           <img :src="logo" alt="Game Arenas" style="display: block; margin: 0 auto; max-width: 500px; width: 100%; height: auto;">
         </div>
-        <br>
         <span style="color: #00ffff; font-size: 12px; font-weight: bold; letter-spacing: 1px; cursor: pointer;" @click="idi_na_scoreboard">SCOREBOARD</span>
         <template v-if="jePrijavljen">
           <button @click="router.push('/ProfilKorisnik')" style="background: none; border: none; color: #00ffff; font-size: 12px; font-weight: bold; cursor: pointer;">PROFIL ({{ trenutniKorisnik.username }})</button>

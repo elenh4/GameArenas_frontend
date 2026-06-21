@@ -108,43 +108,6 @@
           </div>
         </div>
       </div>
-      <div style="border: 2px solid #ff00ff; padding: 20px; background: rgba(255, 0, 255, 0.05); margin-bottom: 40px;">
-        <h2 style="color: #ff00ff; border-bottom: 1px solid #ff00ff; padding-bottom: 10px; letter-spacing: 1px;">ZAVRŠENI TURNIRI - UPIS REZULTATA</h2>
-
-        <div v-if="zavrseniTurniri.length === 0" style="color: #888; font-size: 13px; margin: 20px 0; text-align: center;">
-          Nema završenih turnira za upis rezultata.
-        </div>
-
-        <div v-for="t in zavrseniTurniri" :key="t._id" style="margin-bottom: 30px; background: #1a1a3a; padding: 20px;">
-          <h3 style="color: #ff00ff; margin: 0 0 15px 0;">{{ t.naziv }} — {{ t.datum }} {{ t.vrijeme }}</h3>
-          
-          <p style="color: #888; font-size: 13px; margin-bottom: 15px;">Prijavljeni igrači: {{ t.prijavljeni?.length || 0 }}</p>
-
-          <div v-if="!t.zavrsen">
-            <div v-for="(igrac, index) in t.prijavljeni" :key="igrac._id" style="display: flex; gap: 15px; align-items: center; margin-bottom: 10px;">
-              <span style="color: #ff00ff; font-weight: bold; min-width: 30px;">{{ index + 1 }}.</span>
-              <span style="color: #fff; font-weight: bold; flex: 1;">{{ igrac.username }}</span>
-              <input
-                v-model="rezultati[t._id + '_' + igrac._id]"
-                type="number"
-                placeholder="Bodovi"
-                style="width: 100px; height: 35px; background: #0a0e27; border: 1px solid #ff00ff; color: #fff; padding: 0 10px; font-size: 13px; outline: none;"
-              />
-            </div>
-
-            <button
-              @click="upisiRezultate(t)"
-              style="margin-top: 15px; padding: 10px 25px; background: linear-gradient(90deg, #ff00ff, #00ffff); color: #000; border: none; font-weight: bold; cursor: pointer; font-size: 13px; letter-spacing: 1px;"
-            >
-              SPREMI REZULTATE
-            </button>
-          </div>
-
-          <div v-else style="color: #00ff88; font-weight: bold; font-size: 13px;">
-            ✓ Rezultati već upisani
-          </div>
-        </div>
-      </div>
       <div style="border: 2px solid #00ffff; padding: 20px; background: rgba(0, 255, 255, 0.05);">
         <h2 style="color: #00ffff; border-bottom: 1px solid #00ffff; padding-bottom: 10px; letter-spacing: 1px;">SCOREBOARD</h2>
 
@@ -189,10 +152,8 @@ const logo = ref(GameArenasLogo)
 const router = useRouter()
 
 const turniri = ref([])
-const zavrseniTurniri = ref([])
 const korisnici = ref([])
 const neodobreniVolonteri = ref([])
-const rezultati = ref({})
 
 const korisniciPoRedoslijedu = computed(() =>
   [...korisnici.value].sort((a, b) => (b.bodovi || 0) - (a.bodovi || 0))
@@ -214,10 +175,6 @@ const dohvatiPodatke = async () => {
     turniri.value = svi.filter(t => {
       const vrijemeTurnira = new Date(`${t.datum}T${t.vrijeme}`)
       return vrijemeTurnira > sad
-    })
-    zavrseniTurniri.value = svi.filter(t => {
-      const vrijemeTurnira = new Date(`${t.datum}T${t.vrijeme}`)
-      return vrijemeTurnira <= sad
     })
   } catch (error) {
     console.error('Greška pri dohvatu turnira:', error)
@@ -248,24 +205,6 @@ const odbijVolontera = async (id) => {
     dohvatiPodatke()
   } catch (error) {
     alert('Greška pri odbijanju.')
-  }
-}
-
-const upisiRezultate = async (turnir) => {
-  try {
-    const rezultatiZaTurnir = turnir.prijavljeni.map(igrac => ({
-      korisnikId: igrac._id,
-      bodovi: parseInt(rezultati.value[turnir._id + '_' + igrac._id] || 0)
-    }))
-
-    await axios.post(`${API_URL}/api/turniri/${turnir._id}/rezultati`, {
-      rezultati: rezultatiZaTurnir
-    })
-
-    alert('Rezultati uspješno upisani!')
-    dohvatiPodatke()
-  } catch (error) {
-    alert('Greška pri upisu rezultata.')
   }
 }
 

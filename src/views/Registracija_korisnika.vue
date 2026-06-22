@@ -124,7 +124,7 @@ const ucitavanje = ref(false)
 
 const krivi_podaci = async () => {
   if (user.password !== user.confirmPassword) {
-    console.error('Lozinka i ponovna lozinka se ne podudaraju!')
+    alert('Lozinka i ponovna lozinka se ne podudaraju!')
     return
   }
 
@@ -139,9 +139,18 @@ const krivi_podaci = async () => {
       username: user.username,
       newsletter: user.prihvacaNewsletter
     })
-    router.push('/')
+
+    const response = await axios.post(`${API_URL}/api/korisnici/prijava`, {
+      email: user.email,
+      lozinka: user.password
+    })
+
+    localStorage.setItem('trenutniKorisnik', JSON.stringify(response.data.user))
+    localStorage.setItem('userId', response.data.user.id)
+    router.push('/ProfilKorisnik')
+
   } catch (error) {
-    console.error('Greška pri registraciji:', error.response?.data?.message || error.message)
+    alert(error.response?.data?.message || 'Greška pri registraciji.')
   } finally {
     ucitavanje.value = false
   }

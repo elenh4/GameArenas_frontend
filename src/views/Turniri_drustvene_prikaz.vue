@@ -63,18 +63,21 @@
             </ol>
           </div>
           <button
+            v-if="mozeSePrijaviti(t)"
             style="width: 100%; padding: 12px; background: linear-gradient(90deg, #00ffff, #ff00ff); color: #000; border: none; font-size: 13px; font-weight: bold; cursor: pointer; letter-spacing: 1px; margin-top: auto;"
             @mouseover="$event.target.style.opacity = '0.8'"
             @mouseout="$event.target.style.opacity = '1'"
             @click="prijaviSeNaTurnir(t._id)">
             PRIJAVI SE NA TURNIR
           </button>
+          <div v-else style="width: 100%; padding: 12px; background: #333; color: #888; font-size: 13px; font-weight: bold; text-align: center; letter-spacing: 1px; margin-top: auto;">
+            PRIJAVE ZATVORENE
+          </div>
         </div>
       </div>
     </main>
   </div>
 </template>
-
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -89,6 +92,11 @@ const turniri = ref([])
 
 const trenutniKorisnik = ref(JSON.parse(localStorage.getItem('trenutniKorisnik')))
 const jePrijavljen = computed(() => !!trenutniKorisnik.value)
+
+const mozeSePrijaviti = (t) => {
+  const datumTurnira = new Date(`${t.datum}T${t.vrijeme}`)
+  return datumTurnira > new Date()
+}
 
 const idi_na_profil = () => {
     if (trenutniKorisnik.value?.uloga === 'admin') {

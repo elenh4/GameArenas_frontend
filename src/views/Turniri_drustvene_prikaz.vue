@@ -130,13 +130,12 @@ const prijaviSeNaTurnir = async (turnirId) => {
         return
     }
     try {
-        const res = await axios.post(`${API_URL}/api/turniri/${turnirId}/prijava`, {
+        await axios.post(`${API_URL}/api/turniri/${turnirId}/prijava`, {
             userId: trenutniKorisnik.value.id
         })
-        alert(res.data.message)
         dohvatiTurnire()
     } catch (error) {
-        alert(error.response?.data?.message || 'Greška pri prijavi.')
+        console.error(error.response?.data?.message || 'Greška pri prijavi.')
     }
 }
 

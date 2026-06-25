@@ -97,6 +97,7 @@ const prijavi_se = async () => {
     if (!response.ok) throw new Error(data.message || 'Neispravni podaci.')
     localStorage.setItem('trenutniKorisnik', JSON.stringify(data.user))
     localStorage.setItem('userId', data.user.id)
+    localStorage.setItem('token', data.token)
 
     if (data.user.uloga === 'admin') {
       router.push('/Admin')

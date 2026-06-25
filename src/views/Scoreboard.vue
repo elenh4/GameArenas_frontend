@@ -138,10 +138,11 @@ const spremiBodove = async (userId) => {
 };
 
 const odjavi_se = () => {
-    localStorage.removeItem('trenutniKorisnik');
-    trenutniKorisnik.value = null;
-    router.push('/');
-};
+  localStorage.removeItem('trenutniKorisnik')
+  localStorage.removeItem('userId')
+  localStorage.removeItem('token')
+  router.push('/')
+}
 
 onMounted(dohvatiRezultate);
 </script>

@@ -81,6 +81,7 @@ const prijava_stranica = () => router.push('/Prijava_korisnika')
 const idi_na_Pocetnu = () => router.push('/')
 const drustvene_igrice_prikaz = () => router.push('/Turniri_drustvene_prikaz')
 const idi_na_scoreboard = () => router.push('/Scoreboard')
+
 const odjavi_se = () => {
   localStorage.clear()
   trenutniKorisnik.value = null

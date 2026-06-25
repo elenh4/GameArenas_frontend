@@ -79,9 +79,10 @@ const spremiNovost = async () => {
 }
 
 const odjavi_se = () => {
-    localStorage.clear()
-    trenutniKorisnik.value = null
-    router.push('/')
+  localStorage.removeItem('trenutniKorisnik')
+  localStorage.removeItem('userId')
+  localStorage.removeItem('token')
+  router.push('/')
 }
 
 onMounted(dohvatiNovosti)

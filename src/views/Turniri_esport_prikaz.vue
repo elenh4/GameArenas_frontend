@@ -107,10 +107,10 @@ const idi_na_profil = () => {
 }
 
 const odjavi_se = () => {
-    localStorage.removeItem('trenutniKorisnik')
-    localStorage.removeItem('userId')
-    trenutniKorisnik.value = null
-    router.push('/')
+  localStorage.removeItem('trenutniKorisnik')
+  localStorage.removeItem('userId')
+  localStorage.removeItem('token')
+  router.push('/')
 }
 
 const dohvatiTurnire = async () => {
@@ -132,13 +132,12 @@ const prijaviSeNaTurnir = async (turnirId) => {
         return
     }
     try {
-        const res = await axios.post(`${API_URL}/api/turniri/${turnirId}/prijava`, {
+        await axios.post(`${API_URL}/api/turniri/${turnirId}/prijava`, {
             userId: trenutniKorisnik.value.id
         })
-        alert(res.data.message)
         dohvatiTurnire()
     } catch (error) {
-        alert(error.response?.data?.message || 'Greška pri prijavi.')
+        console.error(error.response?.data?.message || 'Greška pri prijavi.')
     }
 }
 </script>

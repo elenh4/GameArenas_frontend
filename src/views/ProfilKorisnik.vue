@@ -131,8 +131,10 @@ const drustvene_igrice_prikaz = () => { router.push('/Turniri_drustvene_prikaz')
 const odjavi_se = () => {
   localStorage.removeItem('trenutniKorisnik')
   localStorage.removeItem('userId')
+  localStorage.removeItem('token')
   router.push('/')
 }
+
 
 onMounted(() => {
   dohvatiMojeTurnire()

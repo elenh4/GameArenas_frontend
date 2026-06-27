@@ -91,6 +91,16 @@ const azurirajBodove = async () => {
         console.error(error);
     }
 };
+const obrisiKorisnika = async () => {
+    if (!jeAdmin.value) return;
+    if (!confirm('Jesi siguran da želiš obrisati ovaj račun?')) return;
+    try {
+        await axios.delete(`${API_URL}/api/korisnici/${prikazaniUser.value._id}`);
+        router.push('/');
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 
 onMounted(dohvatiProfil);

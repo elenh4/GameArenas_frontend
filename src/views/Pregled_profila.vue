@@ -95,13 +95,15 @@ const obrisiKorisnika = async () => {
     if (!jeAdmin.value) return;
     if (!confirm('Jesi siguran da želiš obrisati ovaj račun?')) return;
     try {
-        await axios.delete(`${API_URL}/api/korisnici/${prikazaniUser.value._id}`);
+        const token = localStorage.getItem('token');
+        await axios.delete(`${API_URL}/api/korisnici/${prikazaniUser.value._id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
         router.push('/');
     } catch (error) {
         console.error(error);
     }
 };
-
 
 onMounted(dohvatiProfil);
 </script>
